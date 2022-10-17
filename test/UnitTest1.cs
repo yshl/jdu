@@ -45,7 +45,7 @@ namespace test
                 var dirTree = new DirectoryTree(dirname);
                 dirTree.CalcUsage(0);
 
-                Assert.AreEqual(dirTree.size, content1.Length + content2.Length);
+                Assert.AreEqual(content1.Length + content2.Length, dirTree.size);
             }
             finally
             {
@@ -67,7 +67,7 @@ namespace test
                 var dirTree = new DirectoryTree(dirname1);
                 dirTree.CalcUsage(0);
 
-                Assert.AreEqual(dirTree.size, content1.Length + content2.Length);
+                Assert.AreEqual(content1.Length + content2.Length, dirTree.size);
 
                 Assert.IsTrue(dirTree.fileList.Count == 0);
                 Assert.IsTrue(dirTree.dirList.Count == 0);
@@ -96,7 +96,7 @@ namespace test
                 Assert.IsTrue(dirTree.dirList.Count == 1);
                 Assert.IsTrue(dirTree.dirList[0].fileList.Count == 0);
 
-                Assert.AreEqual(dirTree.size, content1.Length + content2.Length);
+                Assert.AreEqual(content1.Length + content2.Length, dirTree.size);
             }
             finally
             {
@@ -104,7 +104,7 @@ namespace test
             }
         }
         [TestMethod]
-        public void ジャンクションを無視ししてディレクトリサイズを測定()
+        public void ジャンクションを無視してディレクトリサイズを測定()
         {
             try
             {
@@ -119,8 +119,8 @@ namespace test
                     var dirTree = new DirectoryTree(dirname1);
                     dirTree.CalcUsage(1);
 
-                    Assert.AreEqual(dirTree.dirList.Count, 1);
-                    Assert.AreEqual(dirTree.size, content1.Length);
+                    Assert.AreEqual(1, dirTree.dirList.Count);
+                    Assert.AreEqual(content1.Length, dirTree.size);
                 }
                 finally
                 {
@@ -148,8 +148,8 @@ namespace test
                     var dirTree = new DirectoryTree(dirname1);
                     dirTree.CalcUsageWithJunction(1);
 
-                    Assert.AreEqual(dirTree.dirList.Count, 2);
-                    Assert.AreEqual(dirTree.size, content1.Length * 2);
+                    Assert.AreEqual(2, dirTree.dirList.Count);
+                    Assert.AreEqual(content1.Length * 2, dirTree.size);
                 }
                 finally
                 {
@@ -162,7 +162,7 @@ namespace test
             }
         }
         [TestMethod]
-        public void 並べ替え後はファイルサイズが大きい方が先になる1()
+        public void 並べ替え後はディレクトリサイズが大きい方が先になる1()
         {
             try
             {
@@ -180,7 +180,7 @@ namespace test
                 dirTree.CalcUsage(1);
                 dirTree.dirList.Sort(DirectoryTree.CompareBySize);
 
-                Assert.AreEqual(dirTree.dirList[0].dirname, dirname2);
+                Assert.AreEqual(dirname2, dirTree.dirList[0].dirname);
             }
             finally
             {
@@ -188,7 +188,7 @@ namespace test
             }
         }
         [TestMethod]
-        public void 並べ替え後はファイルサイズが大きい方が先になる2()
+        public void 並べ替え後はディレクトリサイズが大きい方が先になる2()
         {
             try
             {
@@ -205,7 +205,7 @@ namespace test
                 dirTree.CalcUsage(1);
                 dirTree.dirList.Sort(DirectoryTree.CompareBySize);
 
-                Assert.AreEqual(dirTree.dirList[0].dirname, dirname1);
+                Assert.AreEqual(dirname1, dirTree.dirList[0].dirname);
             }
             finally
             {
@@ -213,7 +213,7 @@ namespace test
             }
         }
         [TestMethod]
-        public void 並べ替え後はファイルサイズが同じ場合はファイル名順になる()
+        public void ディレクトリサイズが同じ場合並べ替え後はディレクトリ名順になる()
         {
             try
             {
@@ -230,7 +230,7 @@ namespace test
                 dirTree.CalcUsage(1);
                 dirTree.dirList.Sort(DirectoryTree.CompareBySize);
 
-                Assert.AreEqual(dirTree.dirList[0].dirname, dirname2);
+                Assert.AreEqual(dirname2, dirTree.dirList[0].dirname);
             }
             finally
             {
@@ -258,7 +258,7 @@ namespace test
                 var filename = CreateTempFile("テスト", content);
 
                 var fileSize = new FileSize(filename);
-                Assert.AreEqual(fileSize.size, content.Length);
+                Assert.AreEqual(content.Length, fileSize.size);
             }
             finally
             {
@@ -283,7 +283,7 @@ namespace test
 
                 fileList.Sort(FileSize.CompareBySize);
 
-                Assert.AreEqual(fileList[0], file2);
+                Assert.AreEqual(file2, fileList[0]);
             }
             finally
             {
@@ -308,7 +308,7 @@ namespace test
 
                 fileList.Sort(FileSize.CompareBySize);
 
-                Assert.AreEqual(fileList[0], file1);
+                Assert.AreEqual(file1, fileList[0]);
             }
             finally
             {
@@ -316,7 +316,7 @@ namespace test
             }
         }
         [TestMethod]
-        public void 並べ替え後はファイルサイズが同じ場合はファイル名順になる()
+        public void ファイルサイズが同じ場合並べ替え後はファイル名順になる()
         {
             try
             {
@@ -333,7 +333,7 @@ namespace test
 
                 fileList.Sort(FileSize.CompareBySize);
 
-                Assert.AreEqual(fileList[0], file2);
+                Assert.AreEqual(file2, fileList[0]);
             }finally{
                 Directory.Delete(tmpdir, true);
             }
@@ -346,13 +346,13 @@ namespace test
         public void 通常の引数はdirectoriesリストに格納する()
         {
             var commandArgs = new CommandArgs(new string[]{ "テスト" });
-            Assert.AreEqual(commandArgs.directories[0], "テスト");
+            Assert.AreEqual("テスト", commandArgs.directories[0]);
         }
         [TestMethod]
         public void lフラグを指定すると深さを設定する()
         {
             var commandArgs = new CommandArgs(new string[] { "-l", "3" });
-            Assert.AreEqual(commandArgs.depth, 3);
+            Assert.AreEqual(3, commandArgs.depth);
         }
         [TestMethod]
         public void lフラグで数値以外を指定するとエラー()
@@ -386,13 +386,13 @@ namespace test
         public void cフラグを指定すると区切り文字をコンマにする()
         {
             var commandArgs = new CommandArgs(new string[] { "-c" });
-            Assert.AreEqual(commandArgs.separator, ",");
+            Assert.AreEqual(",", commandArgs.separator);
         }
         [TestMethod]
         public void tフラグを指定すると区切り文字をタブにする()
         {
             var commandArgs = new CommandArgs(new string[] { "-t" });
-            Assert.AreEqual(commandArgs.separator, "\t");
+            Assert.AreEqual("\t", commandArgs.separator);
         }
         [TestMethod]
         public void jフラグを指定するとwithJunctionフラグをONにする()
