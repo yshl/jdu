@@ -161,6 +161,82 @@ namespace test
                 Directory.Delete(tmpdir, true);
             }
         }
+        [TestMethod]
+        public void 並べ替え後はファイルサイズが大きい方が先になる1()
+        {
+            try
+            {
+                var dirname = CreateTempDir("テスト");
+                var dirname1 = CreateTempDir("テスト\\サブ1");
+                var dirname2 = CreateTempDir("テスト\\サブ2");
+
+                var content1 = "short";
+                var filename1 = CreateTempFile(dirname1, "a", content1);
+
+                var content2 = "long-string";
+                var filename2 = CreateTempFile(dirname2, "b", content2);
+
+                var dirTree = new DirectoryTree(dirname);
+                dirTree.CalcUsage(1);
+                dirTree.dirList.Sort(DirectoryTree.CompareBySize);
+
+                Assert.AreEqual(dirTree.dirList[0].dirname, dirname2);
+            }
+            finally
+            {
+                Directory.Delete(tmpdir, true);
+            }
+        }
+        [TestMethod]
+        public void 並べ替え後はファイルサイズが大きい方が先になる2()
+        {
+            try
+            {
+                var dirname = CreateTempDir("テスト");
+                var dirname1 = CreateTempDir("テスト\\サブ1");
+                var dirname2 = CreateTempDir("テスト\\サブ2");
+
+                var content1 = "long-string";
+                var filename1 = CreateTempFile(dirname1, "b", content1);
+                var content2 = "short";
+                var filename2 = CreateTempFile(dirname2, "a", content2);
+
+                var dirTree = new DirectoryTree(dirname);
+                dirTree.CalcUsage(1);
+                dirTree.dirList.Sort(DirectoryTree.CompareBySize);
+
+                Assert.AreEqual(dirTree.dirList[0].dirname, dirname1);
+            }
+            finally
+            {
+                Directory.Delete(tmpdir, true);
+            }
+        }
+        [TestMethod]
+        public void 並べ替え後はファイルサイズが同じ場合はファイル名順になる()
+        {
+            try
+            {
+                var dirname = CreateTempDir("テスト");
+                var dirname1 = CreateTempDir("テスト\\サブb");
+                var dirname2 = CreateTempDir("テスト\\サブa");
+
+                var content1 = "same";
+                var filename1 = CreateTempFile(dirname1, "a", content1);
+                var content2 = "same";
+                var filename2 = CreateTempFile(dirname2, "b", content2);
+
+                var dirTree = new DirectoryTree(dirname);
+                dirTree.CalcUsage(1);
+                dirTree.dirList.Sort(DirectoryTree.CompareBySize);
+
+                Assert.AreEqual(dirTree.dirList[0].dirname, dirname2);
+            }
+            finally
+            {
+                Directory.Delete(tmpdir, true);
+            }
+        }
     }
     [TestClass]
     public class FileSizeTest

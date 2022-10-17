@@ -126,8 +126,8 @@ namespace JDU
         }
         public static int CompareBySize(DirectoryTree a, DirectoryTree b)
         {
-            return a.size > b.size ? 1 :
-                a.size < b.size ? -1 :
+            return a.size > b.size ? -1 :
+                a.size < b.size ? 1 :
                 string.Compare(a.dirname, b.dirname);
         }
     }
