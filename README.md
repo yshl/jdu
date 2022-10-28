@@ -3,7 +3,7 @@
 
 Windows Sysinternals の du が日本語ファイル名に対応していないようなので作ってみました。
 
-互換性はありません。
+Sysinternals の du との互換性はありません。
 
 ## 使用法
 使用法: du [-l depth] [-c|-t] [-j] <ディレクトリ>
